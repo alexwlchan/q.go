@@ -106,7 +106,13 @@ func Q(value any, a ...any) {
 	functionName := getFunctionName()
 	expression := getExpression()
 
-	line := "\x1b[32m" + functionName + "\x1b[39m: " + expression + " = \x1b[36m" + toString(value, a...) + "\x1b[39m\n\n"
+	var line string
+
+	if expression[0] == '"' && expression[len(expression)-1] == '"' {
+		line = "\x1b[32m" + functionName + "\x1b[39m: " + toString(value, a...) + "\n\n"
+	} else {
+		line = "\x1b[32m" + functionName + "\x1b[39m: " + expression + " = \x1b[36m" + toString(value, a...) + "\x1b[39m\n\n"
+	}
 
 	if _, err = f.WriteString(line); err != nil {
 		panic(err)
