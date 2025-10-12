@@ -20,7 +20,8 @@ func chooseDisplayName(functionName string) string {
 	// "func1", which is unhelpful.
 	//
 	// Throw away that part and get the next part.
-	if _, err := regexp.MatchString("^func[0-9]+$", functionName); len(parts) > 1 && err == nil {
+	if m, _ := regexp.MatchString("^func[0-9]+$", parts[len(parts)-1]); len(parts) > 1 && m {
+		fmt.Println(m)
 		return parts[len(parts)-2]
 	}
 
