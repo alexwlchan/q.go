@@ -66,3 +66,31 @@ main: err = stat does_not_exist.txt: no such file or directory
 
 printShapeInfo: a triangle has 3 sides
 ```
+
+## Installation
+
+0.  Read the file `q.go` and make sure you're happy with what it's doing.
+    It's barely a hundred lines of code.
+    Make sure I'm not secretly sending all your logs to my web server!
+
+1.  Clone this repo:
+
+    ```console
+    $ git clone https://github.com/alexwlchan/q.go.git ~/repos/q
+    ```
+
+2.  Create a directory `q` in the root of the project where you want to use this code, and symlink `q.go` from your checkout:
+
+    ```console
+    $ mkdir q
+    $ ln -s ~/repos/q/q.go q/q.go
+    ```
+
+3.  Add the `q.go` file to your `.git/info/exclude` file, so it will be ignored by Git:
+
+    ```console
+    $ echo q.go >> .git/info/exclude
+    ```
+
+This final step allows you to use `q` in your project, without affecting your coworkers: you don't need to add an entry to your checked in `.gitignore` or add it to the list of project dependencies.
+It also means you can't check in any leftover debugging code with `q`, because your tests in CI will immediately fail to compile.
