@@ -4,9 +4,29 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"regexp"
 	"runtime"
 	"strings"
 )
+
+// Choose how to write the function name in the file.
+//
+// e.g. test functions can be long and have multiple parts, so we just
+// pull out the most meaningful part.
+func chooseDisplayName(functionName string) string {
+	parts := strings.Split(functionName, ".")
+
+	// If this is an anonymous function, the name will be something like
+	// "func1", which is unhelpful.
+	//
+	// Throw away that part and get the next part.
+	if m, _ := regexp.MatchString("^func[0-9]+$", parts[len(parts)-1]); len(parts) > 1 && m {
+		fmt.Println(m)
+		return parts[len(parts)-2]
+	}
+
+	return parts[len(parts)-1]
+}
 
 func getFunctionName() string {
 	pc, _, _, ok := runtime.Caller(2)
@@ -19,14 +39,7 @@ func getFunctionName() string {
 		return "<unknown>"
 	}
 
-	// The name of test functions can be long and have multiple parts,
-	// e.g. tailscale.com/wgengine/magicsock.TestNetworkDownSendErrors
-	//
-	// For brevity, just get the last part.
-	parts := strings.Split(fn.Name(), ".")
-	lastPart := parts[len(parts)-1]
-
-	return lastPart
+	return chooseDisplayName(fn.Name())
 }
 
 func getExpression() string {
@@ -79,7 +92,7 @@ func toString(value any, a ...any) string {
 	case fmt.Stringer:
 		return v.String()
 	default:
-		return fmt.Sprintf("%v", v) // fallback
+		return fmt.Sprintf("%+v", v) // fallback
 	}
 }
 
@@ -93,14 +106,7 @@ func Q(value any, a ...any) {
 	functionName := getFunctionName()
 	expression := getExpression()
 
-	var line string
-
-	switch value.(type) {
-	case string:
-		line = "\x1b[32m" + functionName + "\x1b[39m: " + toString(value, a...) + "\n\n"
-	default:
-		line = "\x1b[32m" + functionName + "\x1b[39m: " + expression + " = \x1b[36m" + toString(value, a...) + "\x1b[39m\n\n"
-	}
+	line := "\x1b[32m" + functionName + "\x1b[39m: " + expression + " = \x1b[36m" + toString(value, a...) + "\x1b[39m\n\n"
 
 	if _, err = f.WriteString(line); err != nil {
 		panic(err)
