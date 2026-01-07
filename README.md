@@ -26,6 +26,14 @@ q.Q("a %s has %d sides", name, sides)
 As well as logging the value, `Q()` logs the name of the calling function, and the expression that you logged.
 For example, `Q(2 + 2)` will be logged as `main: 2 + 2 = 4`.
 
+## Inspiration
+
+This idea comes from Ping Yee's [Python module of the same name](https://github.com/zestyping/q), which is for quick debugging of Python programs:
+
+```python
+import q; q.q(exc)
+```
+
 ## Example
 
 Here's a longer example of a program that uses `Q()`:
