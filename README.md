@@ -69,24 +69,24 @@ printShapeInfo: a triangle has 3 sides
 
 ## Installation
 
-0.  Read the file `q.go` and make sure you're happy with what it's doing.
+1.  Read the file `q.go` and make sure you're happy with what it's doing.
     It's barely a hundred lines of code.
     Make sure I'm not secretly sending all your logs to my web server!
 
-1.  Clone this repo:
+2.  Clone this repo:
 
     ```console
     $ git clone https://github.com/alexwlchan/q.go.git ~/repos/q
     ```
 
-2.  Create a directory `q` in the root of the project where you want to use this code, and symlink `q.go` from your checkout:
+3.  Create a directory `q` in the root of the project where you want to use this code, and symlink `q.go` from your checkout:
 
     ```console
     $ mkdir q
     $ ln -s ~/repos/q/q.go q/q.go
     ```
 
-3.  Add the `q.go` file to your `.git/info/exclude` file, so it will be ignored by Git:
+4.  Add the `q.go` file to your `.git/info/exclude` file, so it will be ignored by Git:
 
     ```console
     $ echo q.go >> .git/info/exclude
